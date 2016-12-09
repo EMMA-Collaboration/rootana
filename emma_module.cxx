@@ -97,8 +97,8 @@ struct EmmaRun: public TARunInterface
       // initialize canvases
 
       fCanvasTdcRaw = new TCanvas("TDC_raw_data");
-      fCanvasA1A2Summary = new TCanvas("A1_A2_Summary");
-      fCanvasA1A2Detail = new TCanvas("A1_A2_Detail");
+      //fCanvasA1A2Summary = new TCanvas("A1_A2_Summary");
+      //fCanvasA1A2Detail = new TCanvas("A1_A2_Detail");
       fCanvasMCounts = new TCanvas("M_counts");
       fCanvasXYDiffs = new TCanvas("XY_Diffs");
       fCanvasXYSums = new TCanvas("XY_Sums");
@@ -136,7 +136,7 @@ struct EmmaRun: public TARunInterface
       anode_pathway_multiplicity = new TH1D("APM","Anode Pathway Multiplicity Index",511,0.5,511.5);
       anode_pathway_multiplicity->SetXTitle("Index");
       
-      {
+      /*{
          // initialize a1_a2_diff histogram
          const char *title[] = {"A1B - A2B", "A1B - A2M", "A1B - A2T",
                                 "A1M - A2B", "A1M - A2M", "A1M - A2T",
@@ -154,14 +154,14 @@ struct EmmaRun: public TARunInterface
          a1_a2_diff[11]->SetLineColor(2);
          a1_a2_diff[12]->SetLineColor(1);
          a1_a2_diff[13]->SetLineColor(4);
-      }
+      }*/
       
       {
          // initialize m_count histogram
-         const char* title[] = {"Anode Multiplicity", "A2M", "X1L", "X1R", "Y1B", "Y1T", "X2L", "X2R", "Y2B", "Y2T", "Anode & Cathode Measurement Total", "64-Ch Measurement Total"};
-         for(int i = 0; i < 12; i++){
+         const char* title[] = {"Anode Multiplicity", "X1L", "X1R", "Y1B", "Y1T", "Anode & Cathode Measurement Total", "64-Ch Measurement Total"};
+         for(int i = 0; i < 7; i++){
             sprintf(name,"m_count_%i",i);
-            if(i<10)
+            if(i<5)
                m_counts[i] = new TH1D(name,title[i],5,0,4);
             else
                m_counts[i] = new TH1D(name,title[i],100,0,100);
@@ -170,50 +170,38 @@ struct EmmaRun: public TARunInterface
       
       {
          // initialize x_y_diff histogram
-         const char* title[] = {"X1R - X1L", "Y1B - Y1T", "X2R - X2L", "Y2B - Y2T"};
-         for(int i = 0; i < 4; i++){
+         const char* title[] = {"X1R - X1L", "Y1B - Y1T"};
+         for(int i = 0; i < 2; i++){
             sprintf(name,"x_y_diff_%i",i);
             if(i == 0)
                x_y_diff[i] = new TH1D(name,title[i],diffbin,ydiffmin,ydiffmin+ydiffrange);
             if(i == 1)
                x_y_diff[i] = new TH1D(name,title[i],diffbin,xdiffmin,xdiffmin+xdiffrange);
-            if(i==2)
-               x_y_diff[i] = new TH1D(name,title[i],diffbin,xdiffmin,xdiffmin+xdiffrange);     
-            if(i==3)
-               x_y_diff[i] = new TH1D(name,title[i],diffbin,ydiffmin,ydiffmin+ydiffrange);	
             x_y_diff[i]->SetXTitle("Time Diff (ns)");
          }
       }
       
       {
          // initialize x_y_sum histogram
-         const char* title[] = {"X1R + X1L", "Y1T + Y1B", "X2R + X2L", "Y2T + Y2B"};
-         for(int i = 0; i < 4; i++){
+         const char* title[] = {"X1R + X1L", "Y1T + Y1B"};
+         for(int i = 0; i < 2; i++){
             sprintf(name,"x_y_sum_%i",i);
             if(i == 0)
                x_y_sum[i] = new TH1D(name,title[i],sumbin,ysummin,ysummin+ysumrange);
             if(i == 1)
                x_y_sum[i] = new TH1D(name,title[i],sumbin,xsummin,xsummin+xsumrange);
-            if(i==2)
-               x_y_sum[i] = new TH1D(name,title[i],sumbin,xsummin,xsummin+xsumrange);
-            if(i==3)
-               x_y_sum[i] = new TH1D(name,title[i],sumbin,ysummin,ysummin+ysumrange);
             x_y_sum[i]->SetXTitle("Time Sum (ns)");
          }
       }
       {
          // initialize x_y_diff_vs_sum histogram
-         const char*title[] = {"X1R/X1L Diff vs Sum", "Y1B/Y1T Diff vs Sum", "X2R/X2L Diff vs Sum", "Y2B/Y2T Diff vs Sum"};
-         for(int i = 0; i < 4; i++){
+         const char*title[] = {"X1R/X1L Diff vs Sum", "Y1B/Y1T Diff vs Sum"};
+         for(int i = 0; i < 2; i++){
             sprintf(name,"x_y_diff_vs_sum_silly_%i",i);
             if(i == 0)
                x_y_diff_vs_sum_silly[i] = new TH2F(name,title[i],sumbin,ysummin,ysummin+ysumrange,diffbin,ydiffmin,ydiffmin+ydiffrange);
             if(i == 1)
                x_y_diff_vs_sum_silly[i] = new TH2F(name,title[i],sumbin,xsummin,xsummin+xsumrange,diffbin,xdiffmin,xdiffmin+xdiffrange);
-            if(i==2)
-               x_y_diff_vs_sum_silly[i] = new TH2F(name,title[i],sumbin,xsummin,xsummin+xsumrange,diffbin,xdiffmin,xdiffmin+xdiffrange);
-            if(i==3)
-               x_y_diff_vs_sum_silly[i] = new TH2F(name,title[i],sumbin,ysummin,ysummin+ysumrange,diffbin,ydiffmin,ydiffmin+ydiffrange);
             x_y_diff_vs_sum_silly[i]->SetXTitle("Cathode Time Sum (ns)");      
             x_y_diff_vs_sum_silly[i]->SetYTitle("Cathode Time Differecnce (ns)");
          }
@@ -225,8 +213,6 @@ struct EmmaRun: public TARunInterface
       printf("EmmaRun::dtor!\n");
 
       DELETE(fCanvasTdcRaw);
-      DELETE(fCanvasA1A2Summary);
-      DELETE(fCanvasA1A2Detail);
       DELETE(fCanvasMCounts);
       DELETE(fCanvasXYDiffs);
       DELETE(fCanvasXYSums);
@@ -239,11 +225,9 @@ struct EmmaRun: public TARunInterface
       // ***********************************
       // RESET HISTOGRAMS
       // ***********************************
-      for(int i =0; i < 14; i++)
-         a1_a2_diff[i]->Reset();
-      for(int i =0; i < 12; i++)
+      for(int i =0; i < 7; i++)
          m_counts[i]->Reset();
-      for(int i =0; i < 4; i++) {
+      for(int i =0; i < 2; i++) {
          x_y_diff[i]->Reset();
          x_y_sum[i]->Reset();
          x_y_diff_vs_sum_silly[i]->Reset();
@@ -295,59 +279,16 @@ struct EmmaRun: public TARunInterface
          printf("update!\n");
       }
 
-      {       
-         TCanvas* c1 = fCanvasA1A2Summary;
-         c1->Clear();
-         c1->Divide(2,2);
-         // dumb/quick way of getting sum and getting duplicate copy
-         for(int i=0; i<152; i++) {
-            a1_a2_diff[9]->SetBinContent(i,a1_a2_diff[0]->GetBinContent(i) + a1_a2_diff[4]->GetBinContent(i) + a1_a2_diff[8]->GetBinContent(i));
-            a1_a2_diff[10]->SetBinContent(i,a1_a2_diff[1]->GetBinContent(i) + a1_a2_diff[2]->GetBinContent(i) + a1_a2_diff[3]->GetBinContent(i) + a1_a2_diff[5]->GetBinContent(i) + a1_a2_diff[6]->GetBinContent(i) + a1_a2_diff[7]->GetBinContent(i));
-            a1_a2_diff[11]->SetBinContent(i,a1_a2_diff[0]->GetBinContent(i));
-            a1_a2_diff[12]->SetBinContent(i,a1_a2_diff[4]->GetBinContent(i));
-            a1_a2_diff[13]->SetBinContent(i,a1_a2_diff[8]->GetBinContent(i));
-         }
-         // multiplicity of 1 means APM = 1, 2, 4, 8, 16, 32, 64, 128,or 256
-         
-         c1->cd(1);
-         a1_a2_diff[12]->Draw();
-         a1_a2_diff[11]->Draw("same");
-         a1_a2_diff[13]->Draw("same");
-         c1->cd(2);
-         a1_a2_diff[9]->Draw();
-         c1->cd(3);
-         a1_a2_diff[10]->Draw();
-         c1->cd(4);
-         gPad->SetLogy();
-         anode_pathway_multiplicity->Draw();
-         c1->Modified();
-         c1->Update();
-      }
-      
-      {       
-         TCanvas* c1 = fCanvasA1A2Detail;
-         c1->Clear();
-         c1->Divide(3,3);
-         for(int i = 0; i < 9; i++){
-            c1->cd(1+i);
-            a1_a2_diff[i]->Draw();
-         }
-         c1->Modified();
-         c1->Update();
-      }
-
       {
          TCanvas* c1 = fCanvasMCounts;
          c1->Clear();
-         c1->Divide(4,3);
+         c1->Divide(4,2);
          c1->cd(1);  m_counts[0]->Draw();
          c1->cd(2);  m_counts[1]->Draw();
-         c1->cd(3);  m_counts[10]->Draw();
-         c1->cd(4);  m_counts[11]->Draw();
-         for(int i = 4; i < 12; i++){
-            c1->cd(1+i);
-            m_counts[i-2]->Draw();
-         }
+         c1->cd(3);  m_counts[6]->Draw();
+         c1->cd(4);  m_counts[7]->Draw();
+         c1->cd(5);  m_counts[2]->Draw();
+         
          c1->Modified();
          c1->Update();
       }
