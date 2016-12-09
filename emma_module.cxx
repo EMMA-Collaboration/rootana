@@ -2,7 +2,7 @@
 // MIDAS analyzer example 2: ROOT analyzer
 //
 // K.Olchanski
-//
+//Modified by M. Williams & M. Alcorta
 
 #include "manalyzer.h"
 #include "midasio.h"
@@ -288,6 +288,9 @@ struct EmmaRun: public TARunInterface
          c1->cd(3);  m_counts[6]->Draw();
          c1->cd(4);  m_counts[7]->Draw();
          c1->cd(5);  m_counts[2]->Draw();
+         c1->cd(6);  m_counts[3]->Draw();
+         c1->cd(7);  m_counts[4]->Draw();
+         c1->cd(8);  m_counts[5]->Draw();
          
          c1->Modified();
          c1->Update();
@@ -296,8 +299,8 @@ struct EmmaRun: public TARunInterface
       {       
          TCanvas* c1 = fCanvasXYDiffs;
          c1->Clear();
-         c1->Divide(2,2);
-         for(int i = 0; i < 4; i++){
+         c1->Divide(1,2);
+         for(int i = 0; i < 2; i++){
             c1->cd(1+i);
             x_y_diff[i]->Draw();
          }
@@ -308,8 +311,8 @@ struct EmmaRun: public TARunInterface
       {       
          TCanvas* c1 = fCanvasXYSums;
          c1->Clear();
-         c1->Divide(2,2);
-         for(int i = 0; i < 4; i++){
+         c1->Divide(1,2);
+         for(int i = 0; i < 2; i++){
             c1->cd(1+i);
             x_y_sum[i]->Draw();
          }
@@ -322,8 +325,8 @@ struct EmmaRun: public TARunInterface
          c1->Clear();
          if(!(c1->GetShowEventStatus()))c1->ToggleEventStatus();
          if(!(c1->GetShowToolBar()))c1->ToggleToolBar();
-         c1->Divide(2,2);
-         for(int i = 0; i < 4; i++){
+         c1->Divide(1,2);
+         for(int i = 0; i < 2; i++){
             c1->cd(1+i);
             x_y_diff_vs_sum_silly[i]->Draw("colz");
          }
@@ -334,8 +337,8 @@ struct EmmaRun: public TARunInterface
       {       
          TCanvas* c1 = fCanvasXYPositions;
          c1->Clear();
-         c1->Divide(2,2);
-         for(int i = 0; i < 4; i++){
+         c1->Divide(1,2);
+         for(int i = 0; i < 2; i++){
             c1->cd(1+i);
             x_y_diff_vs_sum_silly[i]->Draw("colz");
          }
@@ -417,20 +420,15 @@ struct EmmaRun: public TARunInterface
          multiplicity = multiplicity + anode_pathway[i];
       
       m_counts[0]->Fill(multiplicity);
-      m_counts[1]->Fill(counts[4]);
-      m_counts[2]->Fill(counts[6]);
-      m_counts[3]->Fill(counts[7]);
-      m_counts[4]->Fill(counts[8]);
-      m_counts[5]->Fill(counts[9]);
-      m_counts[6]->Fill(counts[10]);
-      m_counts[7]->Fill(counts[11]);
-      m_counts[8]->Fill(counts[12]);
-      m_counts[9]->Fill(counts[13]);
-      m_counts[10]->Fill(counts[1]+counts[4]+counts[6]+counts[7]+counts[8]+counts[9]+counts[10]+counts[11]+counts[12]+counts[13]);
+      m_counts[1]->Fill(counts[6]);
+      m_counts[2]->Fill(counts[7]);
+      m_counts[3]->Fill(counts[8]);
+      m_counts[4]->Fill(counts[9]);
+      m_counts[5]->Fill(counts[1]+counts[4]+counts[6]+counts[7]+counts[8]+counts[9]+counts[10]+counts[11]+counts[12]+counts[13]);
       int total = 0;
       for(int i=0; i<64; i++)
          total = total + counts[i];
-      m_counts[11]->Fill(total);
+      m_counts[6]->Fill(total);
       
       // Fill anode relevant data
       // A1 - A2
